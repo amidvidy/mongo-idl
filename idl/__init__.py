@@ -21,11 +21,8 @@ def get_field_names(cls):
 This will generate code for all the structs that we have defined.
 """
 def gen():
-    print("Generating output...")
-    for (name, cls) in env.iteritems():
-        print("Generating code for {}".format(name))
+    for cls in env.values():
         print(cls._generate())
-
 
 """
 Base exception for all mongo-idl exceptions
