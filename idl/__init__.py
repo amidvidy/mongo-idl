@@ -88,6 +88,9 @@ class Field(object):
     def __init__(self, *args, **kwargs):
         pass
 
+    def header(self):
+        return "#include {}".format(self._header)
+
     def decl(self):
         return "{type} _{name};".format(
             name=self._name, 
