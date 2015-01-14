@@ -32,7 +32,9 @@
 #pragma once
 
 % for field in fields:
+    % if field.header():
 ${field.header()}
+    % endif
 % endfor
 
 namespace mongo {
@@ -40,6 +42,7 @@ namespace mongo {
     class ${struct_name} {
     public:
         // TODO ctor and dtor
+        // TODO fromBSON, toBSON
         
         // Getters
         % for field in fields:
