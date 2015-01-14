@@ -1,7 +1,8 @@
 from __future__ import print_function
 
 import six
-import mako
+
+from mako.template import Template
 
 """
 Structs that have been defined are stored here
@@ -67,12 +68,14 @@ class Struct(six.with_metaclass(MetaStruct)):
 
     @classmethod
     def _generate(cls, *args, **kwargs):
+        fields = []
+        
         for field_name in get_field_names(cls):
             field = getattr(cls, field_name)
-            field._name = field_name # todo, do this automagically w/ metaclass            
-            print(field.decl())
-            print(field.getter())
-            print(field.setter())
+            field._name = field_name # todo, do this automagically w/ metaclass  
+            fields.append(field)
+
+        
 
 
 class Field(object):
@@ -86,16 +89,16 @@ class Field(object):
 
     def getter(self):
         return """
-        const {type}& get_{name} {{
+        const {type}& get{cname}() {{
             return _{name};
         }}
-        """.format(name=self._name, type=self._type)
+        """.format(name=self._name, cname=self._name.capitalize(), type=self._type)
 
     def setter(self):
         return """
-        void set_{name}(const {type}& {name}) {{
+        void set{cname}(const {type}& {name}) {{
            _{name} = {name};
-        }}""".format(name=self._name, type=self._type)
+        }}""".format(name=self._name, cname=self._name.capitalize(), type=self._type)
 
 
 ## TODO, autogenerate these classes from a map of types->headers
