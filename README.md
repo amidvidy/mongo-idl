@@ -1,6 +1,6 @@
 # mongo-idl
 
-This is a (very) rough prototype of an IDL definition and code generation tool to be used by MongoDB.
+This is a **(very) rough and incomplete** prototype of an IDL definition and code generation tool to be used by MongoDB.
 
 It uses some metaprogramming features of Python to create a DSL for defining message types.
 
