@@ -1,6 +1,8 @@
 from __future__ import print_function
 
 import six
+import os
+import mako
 
 from mako.template import Template
 
@@ -22,7 +24,7 @@ def gen():
     print("Generating output...")
     for (name, cls) in env.iteritems():
         print("Generating code for {}".format(name))
-        cls._generate()
+        print(cls._generate())
 
 
 """
@@ -75,7 +77,14 @@ class Struct(six.with_metaclass(MetaStruct)):
             field._name = field_name # todo, do this automagically w/ metaclass  
             fields.append(field)
 
-        
+        try:
+            # TODO only load template once
+            return Template(filename=os.path.join(os.path.dirname(__file__),'tpl', 'message.tpl')).render(
+                struct_name=cls.__name__,
+                fields=fields,
+            )
+        except:
+            return (mako.exceptions.text_error_template().render())
 
 
 class Field(object):
@@ -83,22 +92,23 @@ class Field(object):
         pass
 
     def decl(self):
-        return """
-        {type} _{name};
-        """.format(name=self._name, type=self._type)
+        return "{type} _{name};".format(
+            name=self._name, 
+            type=self._type)
 
     def getter(self):
-        return """
-        const {type}& get{cname}() {{
-            return _{name};
-        }}
-        """.format(name=self._name, cname=self._name.capitalize(), type=self._type)
+        return "const {type}& get{cname}() {{ return _{name}; }}".format(
+            name=self._name,
+            cname=self._name.capitalize(),
+            type=self._type
+        )
 
     def setter(self):
-        return """
-        void set{cname}(const {type}& {name}) {{
-           _{name} = {name};
-        }}""".format(name=self._name, cname=self._name.capitalize(), type=self._type)
+        return """void set{cname}(const {type}& {name}) {{ _{name} = {name}; }}""".format(
+            name=self._name,
+            cname=self._name.capitalize(),
+            type=self._type
+        )
 
 
 ## TODO, autogenerate these classes from a map of types->headers

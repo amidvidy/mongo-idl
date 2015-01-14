@@ -38,22 +38,21 @@ namespace mongo {
 
     class ${struct_name} {
     public:
-        ${constructor}
-        ${destructor}
+        // TODO ctor and dtor
         
         // Getters
-        % for getter in getters: %
-        ${getter}
-        % endfor %
+        % for field in fields:
+        ${field.getter()}
+        % endfor
         
         // Setters
-        % for setter in setter: %
-        ${setter}
-        % endfor %
+        % for field in fields:
+        ${field.setter()}
+        % endfor
     private:
-        % for field in fields: %
-        ${field}
-        % endfor %                
+        % for field in fields:
+        ${field.decl()}
+        % endfor
     };
 
 }  // namespace mongo
