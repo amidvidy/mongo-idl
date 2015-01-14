@@ -51,7 +51,7 @@ namespace mongo {
         // Getters
         long getIdent() { return _ident; }
         const std::string& getMessage() { return _message; }
-        bool getSuccess() { return _success;}
+        bool getSuccess() { return _success; }
 
         // Setters
         void setIdent(long ident) { _ident = ident; }
