@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 import six
+import mako
 
 """
 Structs that have been defined are stored here
@@ -8,12 +9,21 @@ Structs that have been defined are stored here
 env = {}
 
 """
+Returns the fields from a struct object
+"""
+def get_fields(cls):
+    return (attr for attr in dir(cls) if not attr.startswith('__'))
+
+"""
 This will generate code for all the structs that we have defined.
 """
 def gen():
     print("Generating output...")
-    print(env)
-    # dummy for now
+    for (name, cls) in env.iteritems():
+        print("Generating code for {}".format(name))
+        for field in get_fields(cls):
+            print("Got field: {}".format(field))
+            print(getattr(cls, field))
 
 """
 Base exception for all mongo-idl exceptions
@@ -56,24 +66,34 @@ to define their own message types.
 class Struct(six.with_metaclass(MetaStruct)):
     __abstract__ = True
 
+    def _generate(self, *args, **kwargs):
+        pass
+
+
 class Field(object):
     def __init__(self, *args, **kwargs):
         pass
 
+
 class String(Field):
     pass
+
 
 class Document(Field):
     def __init__(self, *args, **kwargs):
         self.fields = kwargs
         super(Document, self).__init__(self, *args, **kwargs)
 
+
 class Long(Field):
     pass
+
 
 class Array(Field):
     def __init__(self, *args, **kwargs):
         pass
 
+
 class Bool(Field):
     pass
+

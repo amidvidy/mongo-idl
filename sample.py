@@ -3,6 +3,7 @@ import idl
 class ListIndexesRequest(idl.Struct):
     collection = idl.String()
 
+
 class ListIndexesResponse(idl.Struct):
     cursor = idl.Document(
         cid=idl.Long(),
@@ -10,6 +11,7 @@ class ListIndexesResponse(idl.Struct):
         firstBatch=idl.Array(idl.Document())
     )
     ok = idl.Bool(coerce_input=True)
+
 
 if __name__ == '__main__':
     idl.gen()
