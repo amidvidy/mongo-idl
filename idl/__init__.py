@@ -101,7 +101,7 @@ class Field(object):
     def getter(self):
         fmt = None
         if self._primitive:
-            fmt = "{type} get{cname}() {{ return _{name};}}"
+            fmt = "{type} get{cname}() {{ return _{name}; }}"
         else:
             fmt = "const {type}& get{cname}() {{ return _{name}; }}"
         return fmt.format(
