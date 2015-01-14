@@ -49,7 +49,7 @@ namespace mongo {
         // TODO fromBSON, toBSON
 
         // Getters
-        long getIdent() { return _ident;}
+        long getIdent() { return _ident; }
         const std::string& getMessage() { return _message; }
         bool getSuccess() { return _success;}
 
