@@ -67,6 +67,7 @@ class Struct(six.with_metaclass(MetaStruct)):
     __abstract__ = True
 
     def _generate(self, *args, **kwargs):
+        fields = get_fields(self.__class__)
         pass
 
 
@@ -74,10 +75,30 @@ class Field(object):
     def __init__(self, *args, **kwargs):
         pass
 
+    def _field(self, name):
+        return """
+        {1] _{0};
+        """.format(name, self._type)
+
+    def _getter(self, name):
+        return """
+        {1} get_{0} {
+            return _{0}
+        }
+        """.format(name, self._type)
+
+    def _setter(self, name):
+        return """
+        void set_{0}({1}& {0}) {
+           _{0} = {0};
+        }
+        """.format(name, self._type)
+
 
 class String(Field):
-    pass
-
+    def __init__(self, *args, **kwargs):
+        self._type = 'std::string'
+        super(String, self).__init__(self, *args, **kwargs)
 
 class Document(Field):
     def __init__(self, *args, **kwargs):
@@ -86,7 +107,9 @@ class Document(Field):
 
 
 class Long(Field):
-    pass
+    def __init__(self, *args, **kwargs):
+        self._type = 'long'
+        super(Long, self).__init__(self, *args, **kwargs)
 
 
 class Array(Field):
@@ -95,5 +118,6 @@ class Array(Field):
 
 
 class Bool(Field):
-    pass
-
+    def __init__(self, *args, **kwargs):
+        self._type = 'bool'
+        super(Bool, self).__init__(self, *args, **kwargs)
