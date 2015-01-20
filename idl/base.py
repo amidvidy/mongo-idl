@@ -74,6 +74,3 @@ class Struct(six.with_metaclass(MetaStruct)):
             return (mako.exceptions.text_error_template().render())
 
 
-
-
-
